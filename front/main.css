@@ -2,12 +2,14 @@ body {
   max-width: 1200px;
   font-family: 'Roboto', sans-serif;
 }
+
 h1 {
   font-style: italic;
   font-weight: 100;
   margin-bottom: 3rem;
   font-size: 40px;
 }
+
 .container {
   margin: 0 auto;
   background-color: #e2f2fe;
@@ -18,21 +20,23 @@ h1 {
   width: 90%;
   height: 100vh;
 }
+
 .input-container {
   justify-content: space-evenly;
   display: grid;
   grid-template-columns: 3fr 2fr 1fr;
   width: 82%;
 }
+
 input {
   height: 2rem;
   border: solid 1px black;
   border-radius: 3px;
   margin-right: 40px;
   padding: 5px 5px;
-  font-size: 16px;
-  
+  font-size: 16px;  
 }
+
 .btn-add {
   margin: 15px;
   padding: 0 30px;
@@ -40,17 +44,21 @@ input {
   border: none;
   height: 43px
 }
-#where {
+
+#place {
   width: 90%;
 }
-#how { 
+
+#cost { 
   width: 90%;  
 }
+
 .value-container {
   width: 104%;
   margin: 1rem;
   font-weight: 300;
 }
+
 .expenses {
   margin: 0 auto;
   margin-top: 1rem;  
@@ -58,61 +66,71 @@ input {
   grid-template-columns: 2.5fr 2fr 2fr 0.5fr 0.5fr;
   width: 81%;
 }
+
 .expenses p {
   font-size: 30px;
   margin: 0;
 }
+
 #total {  
   font-weight: 300;
   width: 47%;
   font-size: 30px;
   align-self: flex-end;  
 }
+
 #total p {
   margin: 0;
 }
+
 .icons {
   width: 13px;
   height: 13px;
 }
-.whereWasted {
+
+.placeValue {
   min-width: 30%;
   text-align: initial;
 }
-.howMuchWasted {
+
+.costValue {
   min-width: 30%;
 }
+
 .icons {  
   width: 30px;
   height: 30px;
 }
+
 .input-name-shop {
   display: flex; 
   flex-direction: column;
   align-items: flex-start;
 }
+
 .input-cost {
   width: 100%;
   display: flex; 
   flex-direction: column;
   align-items: flex-start;
 }
+
 label{
   font-weight: 300;
   font-size: 16px;
 }
 
 @media (max-width: 960px) {
-  .input-container{
+  .input-container {
     grid-template-columns: 1fr;
     grid-gap: 10px;
   }
-  .btn-add{
+  .btn-add {
     padding: 0 80px;
     justify-self: end;
     margin-right: 3rem;
   }
-  #total{
+  #total {
     width: 65%;
   }
   .expenses {  
@@ -124,53 +142,60 @@ label{
     gap: 0px 0px;
     grid-auto-flow: row;
     grid-template-areas:
-      "whereWasted dataWasted dataWasted"
-      "whereWasted howMuchWasted howMuchWasted"
-      "whereWasted cancel edit";
+      "placeValue dataValue dataValue"
+      "placeValue costValue costValue"
+      "placeValue cancel edit";
   }
   
-  .whereWasted {
-     grid-area: whereWasted;
+  .placeValue {
+     grid-area: placeValue;
      align-self: center; 
-  }  
-  .dataWasted {
-     grid-area: dataWasted; 
-  }  
-  .howMuchWasted { 
-    grid-area: howMuchWasted; 
-  }  
+  }
+
+  .dataValue {
+     grid-area: dataValue; 
+  }
+
+  .costValue { 
+    grid-area: costValue; 
+  } 
+
   .icons:first-child { 
     grid-area: cancel; 
     justify-self: end;
-  } 
+  }
+
   #edit{
-    justify-self: end
+    justify-self: end;
   } 
+
   .icons:last-child { 
     grid-area: edit; 
   }
+
   .inputText {
-    grid-area: whereWasted;
+    grid-area: placeValue;
     align-self: center;
     width: 80%; 
   }
+
   .inputData {
-    grid-area: dataWasted;
+    grid-area: dataValue;
     width: 80%;  
   }
-  .inputCost{
-    grid-area: howMuchWasted;
-    margin: 0.2rem;
 
+  .inputCost{
+    grid-area: costValue;
+    margin: 0.2rem;
   }
   
-  #cancelImg{
+  #cancelImg {
     justify-self: end;
     grid-area: cancel;
   }
-  #saveImg{
+
+  #saveImg { 
     grid-area: edit;
-    justify-self: start
-    
+    justify-self: start;    
   }  
 };

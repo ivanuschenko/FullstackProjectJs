@@ -1,35 +1,36 @@
-let allTask = [];
+let allExpense = [];
 let shopName = '';
-let shopCost;
+let shopCost = '';
 let total = 0;
 const url = 'http://localhost:8000';
 
-window.onload = init = async() => {
-  inputName = document.getElementById('where');
-  inputCost = document.getElementById('how');
+window.onload = init = async() => {  
+  const inputName = document.getElementById('place');
+  const inputCost = document.getElementById('cost');
   inputName.addEventListener('change', updateValueName);
   inputCost.addEventListener('change', updateValueCost);
-  const resp = await fetch(`${url}/allAcc`, {
+  const resp = await fetch(`${url}/allExp`, {
     method: 'GET'
   }); 
   let result = await resp.json();
-  allTask = result
+  allExpense = result;
   render();    
 }
+
 const onClickButton = async () => {     
-  const resp = await fetch(`${url}/CreateAcc`, {
+  const resp = await fetch(`${url}/CreateExp`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
       'Access-Control-Allow-Origin': '*'
-    }, body: JSON.stringify( {
-      name: shopName,
+    }, body: JSON.stringify({
+      place: shopName,
       date: new Date(),
       cost: Number(shopCost)   
     })
   });
-  let result = await resp.json();  
-  allTask = result;
+  const result = await resp.json();   
+  allExpense.push(result);
   shopName = '';
   shopCost = '';  
   render();  
@@ -41,66 +42,65 @@ const updateValueName = (event) => {
 const updateValueCost = (event) => {
   shopCost = event.target.value;
 }
-const DateTransform = (date) => {  
+const dateTransform = (date) => {  
   let result = date.substr(8, 2) + '.' + date.substr(5, 2) + '.' + date.substr(0, 4);  
   return result; 
 }
 
 const render = () => {
   const content = document.getElementById('value-container');
-  const total = document.getElementById('total');  
+   
   while(content.firstChild) {                       //избегает повторяющегося элемента
     content.removeChild(content.firstChild);
-  };
-  while(total.firstChild) {                       //избегает повторяющегося элемента
-    total.removeChild(total.firstChild);
-  };  
-
-  const totalPrice = document.createElement('p');
-  totalPrice.innerText = `Итого: ${allTask.map(object => object.cost).reduce((p, c) => p + c)} p.`;
-  totalPrice.className = 'total';  
-   total.appendChild(totalPrice);
-
-  allTask.map((item, index) => {     
-    const {name, cost, date, _id} = item;    
+  }; 
+  const total = document.getElementById('box-total')
+    total.innerText = allExpense
+    .map((item) => item.cost)
+    .reduce((sum, current) => {
+      return sum + current;
+    }, 0);
+    
+  allExpense.map((item, index) => {
+    const {_id, place, cost, date} = item;
+    const id = _id;    
     const container = document.createElement('div');
     container.className = 'expenses';
-    container.id = `accounting-${_id})`;
+    container.id = `accounting-${id}`;    ;
     content.appendChild(container);  
-    const whereWasted = document.createElement('p')
-    whereWasted.innerText = `${index+1}) ${name}`;
-    whereWasted.className = 'whereWasted';
-    whereWasted.id = `whereWasted-${_id}`;
-    container.appendChild(whereWasted);
-    const dataWasted = document.createElement('p');
-    dataWasted.innerText = DateTransform(date);
-    dataWasted.className = 'dataWasted';
-    dataWasted.id = `wasted-${_id}`;
-    container.appendChild(dataWasted);
-    const howMuchWasted = document.createElement('p');
-    howMuchWasted.innerText = `${cost} p.`;
-    howMuchWasted.id = `costName-${_id}`;
-    howMuchWasted.className = 'howMuchWasted';
-    container.appendChild(howMuchWasted);
+    const placeValue = document.createElement('p')
+    placeValue.innerText = `${index+1}) ${place}`;
+    placeValue.className = 'placeValue';
+    placeValue.id = `placeValue-${id}`;
+    container.appendChild(placeValue);
+    const dataValue = document.createElement('p');
+    dataValue.innerText = dateTransform(date);
+    dataValue.className = 'dataValue';
+    dataValue.id = `wasted-${id}`;
+    container.appendChild(dataValue);
+    const costValue = document.createElement('p');
+    costValue.innerText = `${cost} p.`;
+    costValue.id = `costName-${id}`;
+    costValue.className = 'costValue';
+    container.appendChild(costValue);
     const editImg = document.createElement('img');
     editImg.className = 'icons';
     editImg.id = 'edit'  
     editImg.src = 'img/edit.png';
-    editImg.onclick = () => editText(container, item, _id);
+    editImg.onclick = () => editText(container, item, id);
     container.appendChild(editImg);
     const deleteImg = document.createElement('img');
     deleteImg.className = 'icons';
     deleteImg.src = 'img/delete.png';
-    deleteImg.onclick = () => DeleteTask(_id);
+    deleteImg.onclick = () => deleteTask(id);
     container.appendChild(deleteImg);  
   })    
 
-  const DeleteTask = async (_id) => { 
-    const resp = await fetch(`${url}/deleteAcc/?_id=${_id}`, {
+  const deleteTask = async (id) => { 
+    const resp = await fetch(`${url}/deleteExp/?_id=${id}`, {
       method: 'DELETE', 
     });   
     const result = await resp.json();
-    allTask = result;
+    allExpense = result;
     render();
   };
   
@@ -108,10 +108,10 @@ const render = () => {
     while(container.firstChild) {
       container.removeChild(container.firstChild);
     };
-    const {name, cost, date} = item;
+    const {place, cost, date} = item;
     const inputText = document.createElement('input');
     container.appendChild(inputText);
-    inputText.value = name;
+    inputText.value = place;
     inputText.className = 'inputText'; 
     const inputData = document.createElement('input');
     container.appendChild(inputData);
@@ -134,23 +134,25 @@ const render = () => {
     saveImg.onclick = () => changeValue(index, inputText.value, inputData.value, inputCost.value);
     container.appendChild(saveImg);
   };
+  
   const changeValue = async(index, text, date, cost) => {     
-    const resp = await fetch(`${url}/updateAcc`, {
+    const resp = await fetch(`${url}/updateExp`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
         'Access-Control-Allow-Origin': '*',        
-      }, body: JSON.stringify( {
+      }, body: JSON.stringify({
         _id: index,            
-        name: text,
+        place: text,
         date: date,
         cost: cost               
       })    
     });
-    const result = await resp.json(); 
-    allTask = result;
-    render();
+    const result = await resp.json();
+    allExpense = result;
+    render();    
   };
+
   const cancel = () => {
     render();
   };
