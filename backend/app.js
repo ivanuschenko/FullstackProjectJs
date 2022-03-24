@@ -8,7 +8,7 @@ const apiRoutes = require('./src/modules/routes/routes');
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use("/", apiRoutes);
+app.use('/', apiRoutes);
 
 const url = 'mongodb+srv://admin:admin@cluster0.pyrwd.mongodb.net/FullStackProject?retryWrites=true&w=majority';
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });

@@ -2,15 +2,15 @@ const express = require('express');
 const router = express.Router();
 
 const {
-  getAllAccouning,
-  CreateNewAcc,
-  ChangeAcc,
-  DeleteAcc 
-} = require('../controllers/task.controller');
+  getAllExpense,
+  createExpense,
+  changeExpense,
+  deleteExpense
+} = require('../controllers/expense.controller');
 
-router.get('/allAcc', getAllAccouning);
-router.post('/CreateAcc', CreateNewAcc );
-router.patch('/updateAcc', ChangeAcc);
-router.delete('/deleteAcc', DeleteAcc);
+router.get('/allExp', getAllExpense);
+router.post('/CreateExp', createExpense );
+router.patch('/updateExp', changeExpense);
+router.delete('/deleteExp', deleteExpense);
 
 module.exports = router;
