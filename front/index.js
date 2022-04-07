@@ -53,7 +53,7 @@ const render = () => {
   while(content.firstChild) {                       //избегает повторяющегося элемента
     content.removeChild(content.firstChild);
   }; 
-  const total = document.getElementById('box-total')
+  const total = document.getElementById('box-total');
     total.innerText = allExpense
     .map((item) => item.cost)
     .reduce((sum, current) => {
@@ -61,39 +61,38 @@ const render = () => {
     }, 0);
     
   allExpense.map((item, index) => {
-    const {_id, place, cost, date} = item;
-    const id = _id;    
+    const {_id, place, cost, date} = item;       
     const container = document.createElement('div');
     container.className = 'expenses';
-    container.id = `accounting-${id}`;    ;
+    container.id = `accounting-${_id}`;    ;
     content.appendChild(container);  
     const placeValue = document.createElement('p')
     placeValue.innerText = `${index+1}) ${place}`;
     placeValue.className = 'placeValue';
-    placeValue.id = `placeValue-${id}`;
+    placeValue.id = `placeValue-${_id}`;
     container.appendChild(placeValue);
     const dataValue = document.createElement('p');
     dataValue.innerText = dateTransform(date);
     dataValue.className = 'dataValue';
-    dataValue.id = `wasted-${id}`;
+    dataValue.id = `wasted-${_id}`;
     container.appendChild(dataValue);
     const costValue = document.createElement('p');
     costValue.innerText = `${cost} p.`;
-    costValue.id = `costName-${id}`;
+    costValue.id = `costName-${_id}`;
     costValue.className = 'costValue';
     container.appendChild(costValue);
     const editImg = document.createElement('img');
     editImg.className = 'icons';
     editImg.id = 'edit'  
     editImg.src = 'img/edit.png';
-    editImg.onclick = () => editText(container, item, id);
+    editImg.onclick = () => editText(container, item, _id);
     container.appendChild(editImg);
     const deleteImg = document.createElement('img');
     deleteImg.className = 'icons';
     deleteImg.src = 'img/delete.png';
-    deleteImg.onclick = () => deleteTask(id);
+    deleteImg.onclick = () => deleteTask(_id);
     container.appendChild(deleteImg);  
-  })    
+  });    
 
   const deleteTask = async (id) => { 
     const resp = await fetch(`${url}/deleteExp/?_id=${id}`, {
@@ -104,11 +103,11 @@ const render = () => {
     render();
   };
   
-  const editText = (container, item, index) => {
+  const editText = (container, item) => {
     while(container.firstChild) {
       container.removeChild(container.firstChild);
     };
-    const {place, cost, date} = item;
+    
     const inputText = document.createElement('input');
     container.appendChild(inputText);
     inputText.value = place;
@@ -131,19 +130,20 @@ const render = () => {
     saveImg.src = 'img/okey.png';
     saveImg.className = 'icons';
     saveImg.id = 'saveImg';
-    saveImg.onclick = () => changeValue(index, inputText.value, inputData.value, inputCost.value);
+    saveImg.onclick = () => changeValue(item);
     container.appendChild(saveImg);
   };
   
-  const changeValue = async(index, text, date, cost) => {     
+  const changeValue = async(item) => { 
+    const {id, place, cost, date} = item; 
     const resp = await fetch(`${url}/updateExp`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
         'Access-Control-Allow-Origin': '*',        
       }, body: JSON.stringify({
-        _id: index,            
-        place: text,
+        _id: id,            
+        place: place,
         date: date,
         cost: cost               
       })    
