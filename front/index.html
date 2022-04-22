@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;1,100&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./main.css">
+  <script src="./index.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Учет моих расходов</h1>
+    <div class="input-container"> 
+      <div class="input-name-shop">
+        <label for="where">Куда было потрачено</label>
+        <input type="text" name="where" id="where" placeholder="Куда было потрачено" > 
+      </div>
+      <div class="input-cost">
+        <label for="how">Сколько было потрачено</label>
+        <input type="text" name="how" id="how", placeholder="Сколько было потрачено" >
+      </div> 
+      <input type="button" value="Добавить" class="btn-add", id="btn-add" onclick = onClickButton()>        
+    </div>
+    <div id="total"></div>
+    <div class="value-container" id="value-container" ></div>
+  </div>
+</body>
+</html>
